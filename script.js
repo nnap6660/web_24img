@@ -9,6 +9,7 @@ document.getElementById("upload").addEventListener("change", function (e) {
   const reader = new FileReader();
   reader.onload = function (event) {
     originalImage.src = event.target.result;
+    document.getElementById("original-preview").src = event.target.result;
   };
   reader.readAsDataURL(file);
 });
@@ -51,20 +52,24 @@ function upscaleImage() {
   const width = originalImage.width;
   const height = originalImage.height;
 
-  canvas.width = width * scale;
-  canvas.height = height * scale;
+  const newWidth = width * scale;
+  const newHeight = height * scale;
+
+  canvas.width = newWidth;
+  canvas.height = newHeight;
 
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(originalImage, 0, 0, width * scale, height * scale);
+  ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
 
-  canvas.style.display = "block";
+  // แสดงเปรียบเทียบ
+  document.getElementById("comparison").style.display = "flex";
 
-  // แสดงข้อมูลใหม่
+  // แสดงข้อมูลภาพใหม่
   const resultInfo = document.getElementById("result-info");
   resultInfo.innerHTML = `
     <strong>ข้อมูลภาพที่ขยายแล้ว:</strong><br>
-    🔍 ขนาดใหม่: ${canvas.width} x ${canvas.height} px<br>
-    🔗 Scale: ${scale}x
+    🔍 ขนาดใหม่: ${newWidth} x ${newHeight} px<br>
+    🔗 ขยาย: ${scale}x
   `;
   resultInfo.style.display = "block";
 
