@@ -6,13 +6,19 @@ document.getElementById("upload").addEventListener("change", function (e) {
   if (!file) return;
   uploadedFile = file;
 
-  const reader = new FileReader();
-  reader.onload = function (event) {
-    originalImage.src = event.target.result;
-    document.getElementById("original-preview").src = event.target.result;
-  };
-  reader.readAsDataURL(file);
+  // ลบ Blob URL เก่า ถ้ามี เพื่อป้องกัน memory leak
+  if (window.originalBlobUrl) {
+    URL.revokeObjectURL(window.originalBlobUrl);
+  }
+
+  // สร้าง Blob URL ใหม่จากไฟล์ที่อัพโหลด
+  window.originalBlobUrl = URL.createObjectURL(file);
+
+  originalImage.src = window.originalBlobUrl;
+  document.getElementById("original-preview").src = window.originalBlobUrl;
+  document.getElementById("original-link").href = window.originalBlobUrl;
 });
+
 
 originalImage.onload = function () {
   showOriginalInfo();
@@ -42,7 +48,7 @@ function showOriginalInfo() {
 
 function upscaleImage() {
   const scale = parseInt(document.getElementById("scale").value);
-  const format = document.getElementById("format").value; // ⬅️ ดึงค่านามสกุล
+  const format = document.getElementById("format").value;
 
   if (!originalImage.src) {
     alert("กรุณาเลือกรูปภาพก่อน");
@@ -60,14 +66,14 @@ function upscaleImage() {
   canvas.width = newWidth;
   canvas.height = newHeight;
 
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = false; // ปิด smoothing เพื่อภาพชัด
   ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
 
   document.getElementById("comparison").style.display = "flex";
 
   const originalName = uploadedFile.name.split('.').slice(0, -1).join('.');
   const newFilename = `upscaled_${originalName}.${format}`;
-  
+
   const resultInfo = document.getElementById("result-info");
   resultInfo.innerHTML = `
     <strong>ข้อมูลภาพที่ขยายแล้ว:</strong><br>
@@ -78,20 +84,116 @@ function upscaleImage() {
   `;
   resultInfo.style.display = "block";
 
-  // สร้างลิงก์ดาวน์โหลด
-  const downloadLink = document.getElementById("download");
-
-  // เลือก MIME type ตามนามสกุล
   const mimeTypeMap = {
     jpg: 'image/jpeg',
     png: 'image/png',
     webp: 'image/webp'
   };
-  const mimeType = mimeTypeMap[format] || 'image/jpeg'; // fallback
+  const mimeType = mimeTypeMap[format] || 'image/jpeg';
 
-  downloadLink.href = canvas.toDataURL(mimeType);
+  const dataURL = canvas.toDataURL(mimeType);
 
-  downloadLink.download = newFilename;
-  downloadLink.style.display = "inline-block";
+  // ลิงก์เปิดภาพขยาย
+  // ลบ Object URL เก่าถ้ามี เพื่อไม่ให้ memory leak
+if (window.canvasBlobUrl) {
+  URL.revokeObjectURL(window.canvasBlobUrl);
 }
 
+// สร้าง Blob จาก canvas
+canvas.toBlob(function(blob) {
+  window.canvasBlobUrl = URL.createObjectURL(blob);
+  document.getElementById("canvas-link").href = window.canvasBlobUrl;
+}, mimeType);
+
+
+  // ลิงก์ดาวน์โหลด
+  const downloadLink = document.getElementById("download");
+  downloadLink.href = dataURL;
+  downloadLink.download = newFilename;
+  downloadLink.style.display = "inline-block";
+
+  // แสดงส่วนโดเนท
+  document.getElementById("donate-section").style.display = "block";
+}
+
+function resetPage() {
+  // รีเซ็ต input ไฟล์และค่าต่างๆ
+  document.getElementById("upload").value = "";
+  uploadedFile = null;
+  originalImage.src = "";
+
+  document.getElementById("original-preview").src = "";
+  document.getElementById("original-link").href = "#";
+  document.getElementById("canvas").width = 0;
+  document.getElementById("canvas").height = 0;
+  document.getElementById("canvas-link").href = "#";
+
+  document.getElementById("original-info").style.display = "none";
+  document.getElementById("result-info").style.display = "none";
+  document.getElementById("comparison").style.display = "none";
+  
+  const downloadLink = document.getElementById("download");
+  downloadLink.style.display = "none";
+  downloadLink.href = "";
+  downloadLink.download = "";
+
+  document.getElementById("donate-section").style.display = "none";
+
+  // รีเซ็ต scale และ format เป็นค่าพื้นฐาน
+  document.getElementById("scale").value = 2;
+  document.getElementById("format").value = "jpg";
+}
+
+const dropContainer = document.getElementById('dropcontainer');
+const uploadInput = document.getElementById('upload');
+const originalInfo = document.getElementById('original-info');
+
+dropContainer.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropContainer.style.backgroundColor = '#eee';
+  dropContainer.style.borderColor = '#111';
+});
+
+dropContainer.addEventListener('dragleave', (e) => {
+  e.preventDefault();
+  dropContainer.style.backgroundColor = '';
+  dropContainer.style.borderColor = '#555';
+});
+
+dropContainer.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropContainer.style.backgroundColor = '';
+  dropContainer.style.borderColor = '#555';
+
+  if (e.dataTransfer.files.length > 0) {
+    uploadInput.files = e.dataTransfer.files;  // ใส่ไฟล์ที่ลากลงไปใน input
+    handleFiles(e.dataTransfer.files);
+  }
+});
+
+uploadInput.addEventListener('change', (e) => {
+  if (uploadInput.files.length > 0) {
+    handleFiles(uploadInput.files);
+  }
+});
+
+function handleFiles(files) {
+  const file = files[0];
+  if (!file.type.startsWith('image/')) {
+    alert('กรุณาเลือกไฟล์ภาพเท่านั้น');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    // แสดงข้อมูลไฟล์ที่เลือก
+    originalInfo.style.display = 'block';
+    originalInfo.innerHTML = `
+      <strong>ชื่อไฟล์:</strong> ${file.name}<br>
+      <strong>ประเภท:</strong> ${file.type}<br>
+      <strong>ขนาดไฟล์:</strong> ${(file.size / 1024).toFixed(2)} KB
+    `;
+    // สามารถเพิ่มโค้ดแสดงภาพตัวอย่างได้ที่นี่
+  };
+  reader.readAsDataURL(file);
+}
