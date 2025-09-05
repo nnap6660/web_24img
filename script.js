@@ -42,6 +42,8 @@ function showOriginalInfo() {
 
 function upscaleImage() {
   const scale = parseInt(document.getElementById("scale").value);
+  const format = document.getElementById("format").value; // ⬅️ ดึงค่านามสกุล
+
   if (!originalImage.src) {
     alert("กรุณาเลือกรูปภาพก่อน");
     return;
@@ -61,20 +63,35 @@ function upscaleImage() {
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
 
-  // แสดงเปรียบเทียบ
   document.getElementById("comparison").style.display = "flex";
 
-  // แสดงข้อมูลภาพใหม่
+  const originalName = uploadedFile.name.split('.').slice(0, -1).join('.');
+  const newFilename = `upscaled_${originalName}.${format}`;
+  
   const resultInfo = document.getElementById("result-info");
   resultInfo.innerHTML = `
     <strong>ข้อมูลภาพที่ขยายแล้ว:</strong><br>
+    🖼️ ชื่อไฟล์: ${newFilename}<br>
     🔍 ขนาดใหม่: ${newWidth} x ${newHeight} px<br>
-    🔗 ขยาย: ${scale}x
+    🔗 ขยาย: ${scale}x<br>
+    🧾 รูปแบบไฟล์: ${format.toUpperCase()}
   `;
   resultInfo.style.display = "block";
 
-  // ลิงก์ดาวน์โหลด
+  // สร้างลิงก์ดาวน์โหลด
   const downloadLink = document.getElementById("download");
-  downloadLink.href = canvas.toDataURL("image/jpg");
+
+  // เลือก MIME type ตามนามสกุล
+  const mimeTypeMap = {
+    jpg: 'image/jpeg',
+    png: 'image/png',
+    webp: 'image/webp'
+  };
+  const mimeType = mimeTypeMap[format] || 'image/jpeg'; // fallback
+
+  downloadLink.href = canvas.toDataURL(mimeType);
+
+  downloadLink.download = newFilename;
   downloadLink.style.display = "inline-block";
 }
+
