@@ -3,17 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>เว็บขยายภาพ (พร้อมข้อมูล)</title>
+  <title>เว็บขยายภาพ</title>
   <style>
     body { font-family: sans-serif; padding: 20px; text-align: center; }
-    canvas { border: 1px solid #ccc; margin-top: 10px; max-width: 100%; }
-    .info-box { background: #f9f9f9; padding: 10px; margin: 10px auto; max-width: 500px; text-align: left; border: 1px solid #ddd; border-radius: 5px; }
-    #result-info { margin-top: 20px; }
+    .info-box { background: #f9f9f9; padding: 10px; margin: 10px auto; max-width: 600px; text-align: left; border: 1px solid #ddd; border-radius: 5px; }
+    .image-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .image-box {
+      text-align: center;
+      max-width: 300px;
+    }
+    .image-box img, canvas {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+    #download {
+      display: none;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 
-  <h1>เว็บ ขยายภาพฟรี</h1>
+  <h1>เว็บขยายภาพ (เปรียบเทียบ ก่อน/หลัง)</h1>
   
   <input type="file" id="upload" accept="image/*"><br><br>
 
@@ -23,13 +41,21 @@
   <input type="number" id="scale" value="2" min="1" max="10"><br><br>
 
   <button onclick="upscaleImage()">ขยายภาพ</button>
-  <br><br>
 
-  <canvas id="canvas" style="display:none;"></canvas>
-  
+  <div class="image-grid" id="comparison" style="display:none;">
+    <div class="image-box">
+      <h3>📷 ก่อนขยาย</h3>
+      <img id="original-preview" src="">
+    </div>
+    <div class="image-box">
+      <h3>🆙 หลังขยาย</h3>
+      <canvas id="canvas"></canvas>
+    </div>
+  </div>
+
   <div id="result-info" class="info-box" style="display:none;"></div>
 
-  <a id="download" style="display:none;" download="upscaled.png">📥 ดาวน์โหลดภาพที่ขยายแล้ว</a>
+  <a id="download" download="upscaled.png">📥 ดาวน์โหลดภาพที่ขยายแล้ว</a>
 
   <script src="script.js"></script>
 </body>
