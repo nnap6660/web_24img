@@ -75,6 +75,6 @@ function upscaleImage() {
 
   // ลิงก์ดาวน์โหลด
   const downloadLink = document.getElementById("download");
-  downloadLink.href = canvas.toDataURL("image/png");
+  downloadLink.href = canvas.toDataURL("image/jpg");
   downloadLink.style.display = "inline-block";
 }
