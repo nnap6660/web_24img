@@ -40,7 +40,16 @@
   <label>ขยายกี่เท่า (เช่น 2, 3, 4): </label>
   <input type="number" id="scale" value="2" min="1" max="10"><br><br>
 
-  <button onclick="upscaleImage()">ขยายภาพ</button>
+    <!-- เลือกนามสกุลไฟล์ -->
+    <label for="format">เลือกนามสกุลไฟล์: </label>
+    <select id="format">
+    <option value="jpg">JPG</option>
+    <option value="png">PNG</option>
+    <option value="webp">WEBP</option>
+    </select>
+    <br><br>
+
+  <button onclick="upscaleImage()">แปลงภาพ</button>
 
   <div class="image-grid" id="comparison" style="display:none;">
     <div class="image-box">
