@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>เว็บขยายภาพ (พร้อมข้อมูล)</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    canvas { border: 1px solid #ccc; margin-top: 10px; max-width: 100%; }
+    .info-box { background: #f9f9f9; padding: 10px; margin: 10px auto; max-width: 500px; text-align: left; border: 1px solid #ddd; border-radius: 5px; }
+    #result-info { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>เว็บ ขยายภาพฟรี</h1>
+  
+  <input type="file" id="upload" accept="image/*"><br><br>
+
+  <div id="original-info" class="info-box" style="display:none;"></div>
+
+  <label>ขยายกี่เท่า (เช่น 2, 3, 4): </label>
+  <input type="number" id="scale" value="2" min="1" max="10"><br><br>
+
+  <button onclick="upscaleImage()">ขยายภาพ</button>
+  <br><br>
+
+  <canvas id="canvas" style="display:none;"></canvas>
+  
+  <div id="result-info" class="info-box" style="display:none;"></div>
+
+  <a id="download" style="display:none;" download="upscaled.png">📥 ดาวน์โหลดภาพที่ขยายแล้ว</a>
+
+  <script src="script.js"></script>
+</body>
+</html>
