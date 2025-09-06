@@ -69,7 +69,7 @@ function upscaleImage() {
   ctx.imageSmoothingEnabled = true; // เปิด smoothing ให้ภาพเนียน
   ctx.imageSmoothingQuality = 'high'; // ระบุคุณภาพสูง
 
-  ctx.filter = 'blur(0.5px)'; // เบลอเล็กน้อยให้เรียบเนียน
+  ctx.filter = 'blur(0.8px)'; // เบลอเล็กน้อยให้เรียบเนียน
   ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
   ctx.filter = 'none'; // รีเซ็ต filter เผื่อใช้วาดอย่างอื่นต่อ
 
@@ -201,4 +201,5 @@ function handleFiles(files) {
   };
   reader.readAsDataURL(file);
 }
+
 
