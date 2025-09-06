@@ -66,8 +66,12 @@ function upscaleImage() {
   canvas.width = newWidth;
   canvas.height = newHeight;
 
-  ctx.imageSmoothingEnabled = false; // ปิด smoothing เพื่อภาพชัด
+  ctx.imageSmoothingEnabled = true; // เปิด smoothing ให้ภาพเนียน
+  ctx.imageSmoothingQuality = 'high'; // ระบุคุณภาพสูง
+
+  ctx.filter = 'blur(0.5px)'; // เบลอเล็กน้อยให้เรียบเนียน
   ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+  ctx.filter = 'none'; // รีเซ็ต filter เผื่อใช้วาดอย่างอื่นต่อ
 
   document.getElementById("comparison").style.display = "flex";
 
@@ -197,3 +201,4 @@ function handleFiles(files) {
   };
   reader.readAsDataURL(file);
 }
+
