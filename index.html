@@ -134,8 +134,10 @@
 
 <div class="mt-12">
   <h2 class="text-2xl font-bold text-pink-600 mb-2">👥 จำนวนผู้เยี่ยมชมเว็บไซต์</h2>
-  <p id="view-count" class="text-4xl font-bold text-gray-700">Loading...</p>
+  <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
 </div>
+
+<div>Page Views: <span id="view-count">Loading...</span></div>
 
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
@@ -145,21 +147,18 @@
       debug: true
     });
 
-    // เพิ่มผู้เข้าชมครั้งเดียว
+    // 🚀 เรียกแค่ครั้งเดียว
     counter.up('24tool')
       .then(result => {
-        console.log("API Response:", result);
-
-        if (result && result.data && result.data.up_count !== undefined) {
-          // ใช้ up_count แทน value
-          document.getElementById('view-count').textContent = result.data.up_count.toLocaleString();
-        } else {
-          document.getElementById('view-count').textContent = 'No value returned';
-        }
+        const count = result.data.up_count;
+        // แสดงผลหลายจุดได้โดยไม่เรียก up() เพิ่ม
+        document.getElementById('visitor-count').textContent = count.toLocaleString();
+        document.getElementById('view-count').textContent = count.toLocaleString();
       })
       .catch(error => {
         console.error('❌ Error tracking page view:', error);
-        document.getElementById('view-count').textContent = 'Error loading count';
+        document.getElementById('visitor-count').textContent = 'Error';
+        document.getElementById('view-count').textContent = 'Error';
       });
   });
 </script>
@@ -176,8 +175,10 @@
 
 
 
+
 </body>
 </html>
+
 
 
 
