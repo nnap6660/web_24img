@@ -132,31 +132,33 @@
     </a>
   </div>
 
-  <div class="mt-12">
+<div class="mt-12">
   <h2 class="text-2xl font-bold text-pink-600 mb-2">👥 จำนวนผู้เยี่ยมชมเว็บไซต์</h2>
   <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
 </div>
 
+<div>Page Views: <span id="view-count">Loading...</span></div>
+
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // ✅ ใส่ Workspace Slug และ API Key ที่ถูกต้อง
     const counter = new Counter({
-      workspace: '24tool',              // Workspace Slug
-      accessToken: '',  // 🔑 ใส่ API Key ของคุณ
+      workspace: '24',              
+      accessToken: 'YOUR_API_KEY',  
       debug: true
     });
 
-    // เพิ่มค่าผู้เข้าชมทุกครั้งที่โหลดหน้า
-    counter.up('24tool') // Counter Slug
-      .then(result => {
-        const count = result.value.toLocaleString();
-        document.getElementById('visitor-count').textContent = count;
-      })
-      .catch(error => {
-        console.error('Error tracking page view:', error);
-        document.getElementById('visitor-count').textContent = 'Error';
-      });
+    // เรียก up() แค่ครั้งเดียว
+    counter.up('24tool').then(result => {
+      const count = result.value.toLocaleString();
+      // อัปเดตได้หลายที่ แต่ใช้ค่าจากครั้งเดียว
+      document.getElementById('visitor-count').textContent = count;
+      document.getElementById('view-count').textContent = count;
+    }).catch(error => {
+      console.error('Error tracking page view:', error);
+      document.getElementById('visitor-count').textContent = 'Error';
+      document.getElementById('view-count').textContent = 'Error';
+    });
   });
 </script>
 
@@ -166,8 +168,10 @@
 
 
 
+
 </body>
 </html>
+
 
 
 
