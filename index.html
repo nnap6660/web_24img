@@ -137,7 +137,6 @@
   <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -146,20 +145,14 @@
       debug: true
     });
 
-    // เรียกแค่ครั้งเดียว
     counter.up('24tool')
       .then(result => {
-        // เอา up_count - 1 แสดง
-        const count = result.data.up_count - 1;
-
-        // แสดงผล
+        const count = result.data.up_count - 1; // ลดลง 1
         document.getElementById('visitor-count').textContent = count.toLocaleString();
-        document.getElementById('view-count').textContent = count.toLocaleString();
       })
       .catch(error => {
         console.error('❌ Error tracking page view:', error);
         document.getElementById('visitor-count').textContent = 'Error';
-        document.getElementById('view-count').textContent = 'Error';
       });
   });
 </script>
@@ -180,6 +173,7 @@
 
 </body>
 </html>
+
 
 
 
