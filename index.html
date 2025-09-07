@@ -137,22 +137,25 @@
   <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
 </div>
 
+<!-- แสดงจำนวนผู้เข้าชม -->
+<div>Page Views: <span id="view-count">Loading...</span></div>
+
+<!-- โหลด CounterAPI -->
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const counter = new Counter({
-      workspace: '24tool',   // ✅ ใช้ Workspace slug
-      debug: true
-    });
+    // สร้าง Counter (ใช้ workspace slug จริงของคุณ เช่น 24)
+    const counter = new Counter({ workspace: '24' });
 
-    // 🚀 เรียก up() แค่ครั้งเดียว
-    counter.up('24tool').then(result => {
-      const count = result.value.toLocaleString();
-      document.getElementById('visitor-count').textContent = count;
-    }).catch(error => {
-      console.error('Error tracking page view:', error);
-      document.getElementById('visitor-count').textContent = 'Error';
-    });
+    // เพิ่มค่าผู้เข้าชม + แสดงผล
+    counter.up('24tool')   // <-- ใส่ counter slug ของคุณเอง
+      .then(result => {
+        document.getElementById('view-count').textContent = result.value.toLocaleString();
+      })
+      .catch(error => {
+        console.error('Error tracking page view:', error);
+        document.getElementById('view-count').textContent = 'Error';
+      });
   });
 </script>
 
@@ -163,8 +166,10 @@
 
 
 
+
 </body>
 </html>
+
 
 
 
