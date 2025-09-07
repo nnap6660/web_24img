@@ -134,27 +134,26 @@
 
 <div class="mt-12">
   <h2 class="text-2xl font-bold text-pink-600 mb-2">👥 จำนวนผู้เยี่ยมชมเว็บไซต์</h2>
-  <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
+  <p id="view-count" class="text-4xl font-bold text-gray-700">Loading...</p>
 </div>
 
-<!-- แสดงจำนวนผู้เข้าชม -->
-<div>Page Views: <span id="view-count">Loading...</span></div>
-
-<!-- โหลด CounterAPI -->
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // สร้าง Counter (ใช้ workspace slug จริงของคุณ เช่น 24)
-    const counter = new Counter({ workspace: '24' });
+    // ใช้ workspace slug ตรง ๆ
+    const counter = new Counter({
+      workspace: '24tool',
+      debug: true   // เปิด debug ดู log
+    });
 
-    // เพิ่มค่าผู้เข้าชม + แสดงผล
-    counter.up('24tool')   // <-- ใส่ counter slug ของคุณเอง
+    // ใช้ counter slug ตรง ๆ
+    counter.up('24tool')
       .then(result => {
         document.getElementById('view-count').textContent = result.value.toLocaleString();
       })
       .catch(error => {
-        console.error('Error tracking page view:', error);
-        document.getElementById('view-count').textContent = 'Error';
+        console.error('❌ Error tracking page view:', error);
+        document.getElementById('view-count').textContent = 'Error loading count';
       });
   });
 </script>
@@ -167,8 +166,10 @@
 
 
 
+
 </body>
 </html>
+
 
 
 
