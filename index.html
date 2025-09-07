@@ -140,13 +140,13 @@
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // ใช้ workspace slug ตรง ๆ
+    // ตั้ง workspace slug
     const counter = new Counter({
       workspace: '24tool',
-      debug: true   // เปิด debug ดู log
+      debug: true   // เปิด debug เพื่อดู log ใน Console
     });
 
-    // ใช้ counter slug ตรง ๆ
+    // เพิ่มจำนวนผู้เข้าชม (counter slug = 24tool)
     counter.up('24tool')
       .then(result => {
         document.getElementById('view-count').textContent = result.value.toLocaleString();
@@ -167,8 +167,11 @@
 
 
 
+
+
 </body>
 </html>
+
 
 
 
