@@ -148,13 +148,19 @@
 
     // เพิ่มจำนวนผู้เข้าชม (counter slug = 24tool)
     counter.up('24tool')
-      .then(result => {
-        document.getElementById('view-count').textContent = result.value.toLocaleString();
-      })
-      .catch(error => {
-        console.error('❌ Error tracking page view:', error);
-        document.getElementById('view-count').textContent = 'Error loading count';
-      });
+  .then(result => {
+    console.log("API Response:", result); // ✅ เช็คว่ามีอะไรกลับมา
+    if (result && result.value !== undefined) {
+      document.getElementById('view-count').textContent = result.value.toLocaleString();
+    } else {
+      document.getElementById('view-count').textContent = 'No value returned';
+    }
+  })
+  .catch(error => {
+    console.error('❌ Error tracking page view:', error);
+    document.getElementById('view-count').textContent = 'Error loading count';
+  });
+
   });
 </script>
 
@@ -171,6 +177,7 @@
 
 </body>
 </html>
+
 
 
 
