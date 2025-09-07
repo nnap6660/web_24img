@@ -134,28 +134,48 @@
 
 <div class="mt-12">
   <h2 class="text-2xl font-bold text-pink-600 mb-2">👥 จำนวนผู้เยี่ยมชมเว็บไซต์</h2>
-  <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
+  <p id="visitor-count" class="text-4xl font-bold text-gray-700">Loading...</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const counter = new Counter({
-      workspace: '24tool',
-      debug: true
-    });
+document.addEventListener('DOMContentLoaded', function() {
+  const counter = new Counter({ workspace: '24tool', debug: true });
+  const storageKey = 'visited_24tool_time';
+  const now = Date.now();
+  const TEN_MINUTES = 10 * 60 * 1000; // 10 นาทีเป็นมิลลิวินาที
 
+  const lastVisit = localStorage.getItem(storageKey);
+
+  if (!lastVisit || now - lastVisit > TEN_MINUTES) {
+    // ถ้ายังไม่เคยเข้าหรือเกิน 10 นาที → เพิ่ม count
     counter.up('24tool')
       .then(result => {
-        const count = result.data.up_count - 1; // ลดลง 1
+        const count = result.data.up_count;
         document.getElementById('visitor-count').textContent = count.toLocaleString();
+
+        // บันทึกเวลาเข้าล่าสุด
+        localStorage.setItem(storageKey, now);
       })
       .catch(error => {
         console.error('❌ Error tracking page view:', error);
         document.getElementById('visitor-count').textContent = 'Error';
       });
-  });
+  } else {
+    // ยังไม่ครบ 10 นาที → แค่ดึง count ปัจจุบันมาแสดง
+    counter.get('24tool')
+      .then(result => {
+        const count = result.data.up_count;
+        document.getElementById('visitor-count').textContent = count.toLocaleString();
+      })
+      .catch(error => {
+        console.error('❌ Error fetching page view:', error);
+        document.getElementById('visitor-count').textContent = 'Error';
+      });
+  }
+});
 </script>
+
 
 
 
@@ -173,6 +193,7 @@
 
 </body>
 </html>
+
 
 
 
