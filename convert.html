@@ -267,6 +267,7 @@
 
 
 <!-- เนื้อหา -->
+ <h1 class="text-3xl font-bold mb-4">แก้ไข.นามสกุล รูปภาพฟรี</h1>
 
 <label for="upload" class="drop-container">
   <span class="drop-title">ลากวางไฟล์หรือเลือกไฟล์</span>
@@ -342,12 +343,14 @@
 <!-- ปุ่มแปลง -->
 <button onclick="convertImages()" class="custom-file-upload">
   แปลงภาพ
-</button>
+</button> <br><br><br>
 
 <!-- ปุ่มดาวน์โหลด (ซ่อนก่อน) -->
-<button id="download" class="custom-file-upload" style="display:none; margin-left:10px;">
-  ดาวน์โหลดภาพทั้งหมด
-</button>
+<!-- แบบปกติ -->
+<a id="downloadLink" href="#" download style="display:none; margin-left:10px; text-decoration:none; color:inherit;">
+  📥 ดาวน์โหลดภาพทั้งหมด
+</a>
+
 
 <!-- โดเนท -->
 <div id="donate-section" style="display: none; margin-top: 40px; text-align: center;">
@@ -362,12 +365,13 @@
 
 
 <script>
+
 let uploadedImages = [];
 let convertedImages = []; // เก็บ blob ของภาพที่แปลงแล้ว
 
 const uploadInput = document.getElementById('upload');
 const imageGrid = document.getElementById('image-grid');
-const downloadLink = document.getElementById('download');
+const downloadLink = document.getElementById('downloadLink');
 const donateSection = document.getElementById('donate-section');
 
 uploadInput.addEventListener('change', (event) => {
@@ -415,7 +419,7 @@ function convertImages() {
   }
 
   convertedImages = [];
-  let processed = 0; // นับจำนวนที่แปลงเสร็จจริง ๆ
+  let processed = 0;
 
   uploadedImages.forEach((imgData) => {
     const img = new Image();
@@ -434,18 +438,20 @@ function convertImages() {
         });
 
         processed++;
-        console.log(`✅ แปลงแล้ว ${processed}/${uploadedImages.length}`);
 
         if (processed === uploadedImages.length) {
           console.log("🎉 แปลงครบทั้งหมดแล้ว");
-          document.getElementById('download').style.display = 'inline-block';
-          document.getElementById('donate-section').style.display = 'block';
+
+          // แสดงลิงก์ดาวน์โหลด
+          downloadLink.style.display = 'inline-block';
+          donateSection.style.display = 'block';
+              // เลื่อนหน้าไปยังลิงก์ดาวน์โหลด
+  downloadLink.scrollIntoView({behavior: 'smooth', block: 'center'});
         }
       }, 'image/' + format);
     };
   });
 }
-
 
 // ดาวน์โหลดภาพทั้งหมด
 downloadLink.addEventListener('click', () => {
@@ -455,8 +461,11 @@ downloadLink.addEventListener('click', () => {
     a.href = url;
     a.download = img.name;
     a.click();
+    URL.revokeObjectURL(url);
   });
 });
+
+
 </script>
 
 </body>
