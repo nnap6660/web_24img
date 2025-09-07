@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>เครื่องมือออนไลน์ฟรี</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Flowbite CSS JS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.1/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.1/flowbite.min.js"></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 30px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .header img {
+      width: 50px;  /* ปรับขนาดโลโก้ */
+      height: 50px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+  </style>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&family=Itim&display=swap" rel="stylesheet">
+
+
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    .info-box { background: #f9f9f9; padding: 10px; margin: 10px auto; max-width: 600px; text-align: left; border: 1px solid #ddd; border-radius: 5px; }
+    .image-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .image-box {
+      text-align: center;
+      max-width: 300px;
+    }
+    .image-box img, canvas {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+    }
+    #download {
+      display: none;
+      margin-top: 20px;
+    }
+
+    body {
+      font-family: 'Kanit', cursive, sans-serif;
+      background-color: #ffffff;
+      color: #f88581;
+      padding: 20px;
+      text-align: center;
+    }
+
+  </style>
+
+  <style>
+  /* ... existing styles ... */
+
+  .image-box img:hover,
+  .image-box canvas:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+  }
+
+  #logo-png {
+  position: fixed;   /* ลอยติดมุมจอ */
+  top: 20px;         /* ระยะห่างจากบน 10px */
+  left: 20px;        /* ระยะห่างจากซ้าย 10px */
+  width: 100px;      /* กำหนดขนาดความกว้างตามต้องการ */
+  height: auto;      /* ความสูงอัตโนมัติ */
+  z-index: 1000;     /* ให้อยู่บนสุด */
+  cursor: pointer;   /* เปลี่ยนเคอร์เซอร์ถ้าต้องการ */
+}
+
+/* แถบหัวเว็บ */
+.topbar {
+  position: fixed;       /* คุมตำแหน่ง: ให้แถบเมนูติดอยู่ที่จุดเดิมบนหน้าจอ แม้จะเลื่อนหน้า */
+  top: 0;                /* คุมให้ติดขอบบนสุดของจอ */
+  left: 0;               /* คุมให้เริ่มจากซ้ายสุดของจอ */
+  width: 100%;           /* คุมให้ยาวเต็มจอ (กินพื้นที่แนวนอนทั้งหมด) */
+  
+  background: #ffffff;   /* คุมสีพื้นหลังของแถบ (ตรงนี้เป็นสีขาว) */
+  border-bottom: 2px solid #ffd0cf; /* คุมเส้นขอบด้านล่างของแถบ */
+  
+  display: flex;         /* คุม layout: ใช้ Flexbox จัดเรียงสิ่งที่อยู่ใน .topbar */
+  align-items: center;   /* คุมแนวตั้ง: จัดให้ทุก item ในแถบอยู่กึ่งกลางแนวตั้ง */
+  justify-content: space-between; /* คุมแนวนอน: ดัน item ตัวแรกไปซ้ายสุด ตัวสุดท้ายไปขวาสุด */
+  
+  padding: 15px 0px;    /* คุมระยะห่างด้านใน: บน-ล่าง 15px, ซ้าย-ขวา 30px */
+  z-index: 1000;         /* คุมลำดับการซ้อน: ให้ Hot Bar อยู่บนสุด เหนือ element อื่น */
+}
+
+
+/* ลิงก์เมนู */
+.nav-links {
+  margin-left: auto;   /* ดันไปขวาสุด */
+  margin-right: 40px;  /* เว้นจากขอบขวา 40px */
+  display: flex;
+  gap: 20px;           /* ระยะห่างระหว่างลิงก์ */
+}
+.nav-links a {
+  text-decoration: none;
+  color: #f88581;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffd0cf;
+}
+
+
+</style>
+
+<style>
+  h1 {
+    font-size: 60px; /* หรือใส่เป็น px เช่น 32px */
+    font-weight: 700; /* ความหนาของตัวอักษร */
+    margin-bottom: 20px; /* ระยะห่างด้านล่าง */
+  }
+
+  .drop-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 100;
+  padding: 10px;
+  border-radius: 50px;
+  border: 3px dashed #555;
+  color: #444;
+  cursor: pointer;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
+}
+
+.drop-container:hover {
+  background: #eee;
+  border-color: #111;
+}
+
+.drop-container:hover .drop-title {
+  color: #222;
+}
+
+.drop-title {
+  color: #444;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: color .2s ease-in-out;
+}
+
+  #upload {
+    display: none;
+  }
+
+  /* ปุ่ม custom */
+  .custom-file-upload {
+    display: inline-block;
+    padding: 8px 15px;
+    cursor: pointer;
+    background: #f88581;
+    color: rgb(0, 0, 0);
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .custom-file-upload:hover {
+    background: #ffd0cf;
+  }
+
+</style>
+
+
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 w-full z-50" style="background-color: #f88581;">
+  <!-- container เนื้อหา -->
+  <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4">
+    
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center space-x-3">
+      <img src="images/logo3.png" class="h-14 w-13" alt="Logo">
+      <span class="self-center text-2xl font-semibold text-white">Pixel UP</span>
+    </a>
+
+    <!-- Hamburger (mobile) -->
+    <button data-collapse-toggle="navbar-multi-level" type="button"
+      class="inline-flex items-center p-2 w-10 h-10 justify-center text-white rounded-lg md:hidden hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-300"
+      aria-controls="navbar-multi-level" aria-expanded="false">
+      <span class="sr-only">Open main menu</span>
+      <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15"/>
+      </svg>
+    </button>
+
+    <!-- เมนูหลัก -->
+    <div class="hidden w-full md:block md:w-auto" id="navbar-multi-level">
+      <ul class="flex flex-col md:flex-row md:space-x-8 font-medium mt-4 md:mt-0">
+        <li><a href="index.html" class="block py-2 px-3 text-white hover:text-gray-200">Home</a></li>
+        <li class="relative">
+          <button id="dropdownImg" data-dropdown-toggle="menuImg" class="flex items-center justify-between w-full py-2 px-3 text-white md:w-auto hover:text-gray-200">
+            IMG Tool
+            <svg class="w-2.5 h-2.5 ms-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+          </button>
+          <div id="menuImg" class="absolute left-0 mt-2 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-10">
+            <ul class="py-2 text-sm text-gray-700">
+              <li><a href="pixelup.html" class="block px-4 py-2 hover:bg-gray-100">อัพขนาดภาพ</a></li>
+              <li><a href="compress.html" class="block px-4 py-2 hover:bg-gray-100">บีบอัดภาพ</a></li>
+              <li><a href="convert.html" class="block px-4 py-2 hover:bg-gray-100">แปลงนามสกุลภาพ</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="relative">
+          <button id="dropdownPdf" data-dropdown-toggle="menuPdf" class="flex items-center justify-between w-full py-2 px-3 text-white md:w-auto hover:text-gray-200">
+            PDF Tool
+            <svg class="w-2.5 h-2.5 ms-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+            </svg>
+          </button>
+          <div id="menuPdf" class="absolute left-0 mt-2 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 z-10">
+            <ul class="py-2 text-sm text-gray-700">
+              <li><a href="pdf-merge.html" class="block px-4 py-2 hover:bg-gray-100">แก้ไข PDF</a></li>
+              <li><a href="pdf-convert.html" class="block px-4 py-2 hover:bg-gray-100">IMG TO PDF</a></li>
+            </ul>
+          </div>
+        </li>
+        <li><a href="Donate.html" class="block py-2 px-3 text-white hover:text-gray-200">Donate</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+<br><br><br><br>
+
+
+
+
+  <!-- โลโก้ SVG 
+  <a href="index.html"> 
+  <img src="images/logo.png" alt="โลโก้" id="logo-png" /><br><br>
+  </a>  -->
+
+  <h1 class="text-5xl font-bold text-#f88581-500 mb-5">ปรับแต่งรูปภาพเพิ่มจำนวน Pixel ฟรี</h1>
+  
+  <label for="images" class="drop-container" id="dropcontainer">
+  <span class="drop-title">ลากวางไฟล์</span>
+  หรือ
+    <label for="upload" class="custom-file-upload" style="margin-left:0px;">
+  เลือกรูปภาพ
+    </label>
+    <input type="file" id="upload" accept="image/*">
+  </label>
+
+  <div id="original-info" class="info-box" style="display:none;"></div><br>
+
+  <div class="flex flex-wrap items-center justify-center gap-4 mb-4">
+  <div class="flex flex-col">
+    <label for="scale">ต้องการขยายกี่เท่า:</label>
+    <input type="number" id="scale" value="2" min="1" max="10" class="border rounded px-2 py-1 w-32">
+  </div>
+
+  <div class="flex flex-col">
+    <label for="format">เลือกนามสกุลไฟล์:</label>
+    <select id="format" class="border rounded px-2 py-1 w-32">
+      <option value="jpg">JPG</option>
+      <option value="png">PNG</option>
+      <option value="webp">WEBP</option>
+    </select>
+  </div>
+</div>
+
+    <br><br>
+
+  <button onclick="upscaleImage()" class="custom-file-upload" style="margin-left:0px; border: none; outline: none;">
+    แปลงภาพ
+  </button>
+
+
+  <div class="image-grid" id="comparison" style="display:none;">
+    <div class="image-box">
+        <h3>📷 ก่อนขยาย</h3>
+        <a id="original-link" href="#" target="_blank">
+            <img id="original-preview" src="">
+        </a>
+    </div>
+
+    <div class="image-box">
+        <h3>🆙 หลังขยาย</h3>
+        <a id="canvas-link" href="#" target="_blank">
+            <canvas id="canvas"></canvas>
+        </a>
+    </div>
+
+
+  </div>
+
+  <div id="result-info" class="info-box" style="display:none;"></div>
+  <a id="download" download="upscaled.jpg">📥 ดาวน์โหลดภาพที่ขยายแล้ว</a>
+
+  <script src="scriptuppixel.js"></script>
+  
+<!-- โดเนท -->
+<div id="donate-section" style="display: none; margin-top: 40px; text-align: center;">
+  <hr style="width:100%; border-color:#f88581; margin-bottom:20px;">
+  <h2>🙏 สนับสนุนจ่ายค่าเว็บไซต์</h2>
+  <p>หากคุณชอบเว็บนี้และต้องการสนับสนุนผู้พัฒนา สามารถโดเนทผ่าน QR Code ด้านล่างได้เลย</p>
+  <img src="images/promptpay_qr.png" alt="QR Code โดเนท" 
+       style="max-width: 250px; width: auto; display:block; margin: 0 auto; border: 1px solid #ccc; padding: 10px; background: #fff; border-radius: 10px;">
+  <p>ขอบคุณมากครับ ❤️</p>
+</div>
+
+</body>
+</html>
