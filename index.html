@@ -140,27 +140,27 @@
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // ตั้ง workspace slug
     const counter = new Counter({
       workspace: '24tool',
-      debug: true   // เปิด debug เพื่อดู log ใน Console
+      debug: true
     });
 
-    // เพิ่มจำนวนผู้เข้าชม (counter slug = 24tool)
+    // เพิ่มผู้เข้าชมครั้งเดียว
     counter.up('24tool')
-  .then(result => {
-    console.log("API Response:", result); // ✅ เช็คว่ามีอะไรกลับมา
-    if (result && result.value !== undefined) {
-      document.getElementById('view-count').textContent = result.value.toLocaleString();
-    } else {
-      document.getElementById('view-count').textContent = 'No value returned';
-    }
-  })
-  .catch(error => {
-    console.error('❌ Error tracking page view:', error);
-    document.getElementById('view-count').textContent = 'Error loading count';
-  });
+      .then(result => {
+        console.log("API Response:", result);
 
+        if (result && result.data && result.data.up_count !== undefined) {
+          // ใช้ up_count แทน value
+          document.getElementById('view-count').textContent = result.data.up_count.toLocaleString();
+        } else {
+          document.getElementById('view-count').textContent = 'No value returned';
+        }
+      })
+      .catch(error => {
+        console.error('❌ Error tracking page view:', error);
+        document.getElementById('view-count').textContent = 'Error loading count';
+      });
   });
 </script>
 
@@ -175,8 +175,10 @@
 
 
 
+
 </body>
 </html>
+
 
 
 
