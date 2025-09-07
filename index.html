@@ -128,26 +128,30 @@
     <!-- Box 2 -->
     <a href="pdf-convert.html" class="block bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition p-6">
       <h2 class="text-xl font-bold text-pink-600 mb-2">🔄 IMG TO PDF</h2>
-      <p class="text-gray-600">รวมไฟล์ภาพหลายไฟล์เป็น PDF ไฟล์เดียว</p>
+      <p class="text-gray-600">รวมไฟล์ PDF หลายไฟล์เป็นไฟล์เดียว</p>
     </a>
   </div>
 
-  <!-- Visitor Counter -->
-  <!-- Visitor Counter -->
 <div class="mt-12">
   <h2 class="text-2xl font-bold text-pink-600 mb-2">👥 จำนวนผู้เยี่ยมชมเว็บไซต์</h2>
   <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
 </div>
 
 <script>
-fetch('https://api.countapi.xyz/hit/24toolnnap6660/visitors')
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('visitor-count').innerText = data.value.toLocaleString();
-  });
+  // API URL (ใช้ /hit ถ้าอยากให้เพิ่มทุกครั้งที่มีคนเข้าเว็บ)
+  const apiUrl = 'https://api.counterapi.dev/v2/workspaces/24/24tool/hit';
+
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitor-count').innerText = data.value.toLocaleString();
+    })
+    .catch(err => {
+      console.error('Error fetching visitor count:', err);
+    });
 </script>
+
+
 
 </body>
 </html>
-
-
