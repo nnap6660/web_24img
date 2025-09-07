@@ -45,5 +45,29 @@
             document.getElementById('visitor-count').textContent = 'ไม่สามารถโหลดได้';
         });
     </script>
+
+    <script>
+  const workspace = '24tool';      // Workspace Slug
+  const counter = '24tool';    // Counter Slug
+  const apiKey = 'YOUR_API_KEY'; // ใส่ API Key ของคุณ
+
+  const apiUrl = `https://api.counterapi.dev/v2/${workspace}/${counter}/up`;
+
+  fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('visitor-count').innerText = data.value.toLocaleString();
+  })
+  .catch(err => {
+    console.error('Error fetching visitor count:', err);
+    document.getElementById('visitor-count').innerText = 'ไม่สามารถโหลดได้';
+  });
+</script>
 </body>
 </html>
+
