@@ -147,11 +147,13 @@
       debug: true
     });
 
-    // 🚀 เรียกแค่ครั้งเดียว
+    // เรียกแค่ครั้งเดียว
     counter.up('24tool')
       .then(result => {
-        const count = result.data.up_count;
-        // แสดงผลหลายจุดได้โดยไม่เรียก up() เพิ่ม
+        // เอา up_count - 1 แสดง
+        const count = result.data.up_count - 1;
+
+        // แสดงผล
         document.getElementById('visitor-count').textContent = count.toLocaleString();
         document.getElementById('view-count').textContent = count.toLocaleString();
       })
@@ -178,6 +180,7 @@
 
 </body>
 </html>
+
 
 
 
