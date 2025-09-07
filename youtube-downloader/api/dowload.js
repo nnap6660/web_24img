@@ -1,15 +1,22 @@
-import ytdl from 'ytdl-core';
+import ytdl from "ytdl-core";
 
 export default async function handler(req, res) {
-  const url = req.query.url;
-  const format = req.query.format || 'mp4';
+  const { url, format } = req.query;
 
-  if (!url) return res.status(400).send('กรุณาใส่ URL');
+  if (!url) return res.status(400).send("กรุณาใส่ URL");
 
   try {
-    res.setHeader('Content-Disposition', `attachment; filename="video.${format}"`);
-    ytdl(url, { quality: format === 'mp3' ? 'highestaudio' : 'highestvideo', filter: format === 'mp3' ? 'audioonly' : null }).pipe(res);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="video.${format}"`
+    );
+
+    if (format === "mp3") {
+      ytdl(url, { filter: "audioonly" }).pipe(res);
+    } else {
+      ytdl(url).pipe(res);
+    }
   } catch (err) {
-    res.status(500).send('เกิดข้อผิดพลาด: ' + err.message);
+    res.status(500).send("เกิดข้อผิดพลาด: " + err.message);
   }
 }
