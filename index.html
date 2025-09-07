@@ -137,27 +137,21 @@
   <p id="visitor-count" class="text-4xl font-bold text-gray-700">0</p>
 </div>
 
-<div>Page Views: <span id="view-count">Loading...</span></div>
-
 <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const counter = new Counter({
-      workspace: '24tool',              
-      accessToken: '',  
+      workspace: '24tool',   // ✅ ใช้ Workspace slug
       debug: true
     });
 
-    // เรียก up() แค่ครั้งเดียว
+    // 🚀 เรียก up() แค่ครั้งเดียว
     counter.up('24tool').then(result => {
       const count = result.value.toLocaleString();
-      // อัปเดตได้หลายที่ แต่ใช้ค่าจากครั้งเดียว
       document.getElementById('visitor-count').textContent = count;
-      document.getElementById('view-count').textContent = count;
     }).catch(error => {
       console.error('Error tracking page view:', error);
       document.getElementById('visitor-count').textContent = 'Error';
-      document.getElementById('view-count').textContent = 'Error';
     });
   });
 </script>
@@ -171,6 +165,7 @@
 
 </body>
 </html>
+
 
 
 
