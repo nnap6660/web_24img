@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ยังไม่ครบ 10 นาที → แค่ดึง count ปัจจุบันมาแสดง
     counter.get('24tool')
       .then(result => {
-        const count = result.data.up_count;
+        const count = result.data.up_count - 1;
         document.getElementById('visitor-count').textContent = count.toLocaleString();
       })
       .catch(error => {
@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+
 
 
 
