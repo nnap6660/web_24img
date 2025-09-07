@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Downloader</title>
+</head>
+<body>
+  <h2>ดาวน์โหลด YouTube (MP3 / MP4)</h2>
+
+  <input type="text" id="ytUrl" placeholder="วางลิงก์ YouTube" style="width:300px;">
+  
+  <select id="format">
+    <option value="mp4">MP4 (วิดีโอ)</option>
+    <option value="mp3">MP3 (เสียง)</option>
+  </select>
+  
+  <button onclick="download()">ดาวน์โหลด</button>
+
+  <script>
+    function download() {
+      const url = document.getElementById("ytUrl").value;
+      const format = document.getElementById("format").value;
+      if (!url) return alert("กรุณาใส่ลิงก์ YouTube");
+
+      // เรียก serverless function บน Vercel
+      window.location.href = `/api/download?url=${encodeURIComponent(url)}&format=${format}`;
+    }
+  </script>
+</body>
+</html>
