@@ -20,10 +20,30 @@
     <h1>จำนวนผู้เข้าชมเว็บไซต์</h1>
     <p>ผู้เข้าชมทั้งหมด: <span id="visitor-count">Loading...</span></p>
 
-    <script src="https://counterapi.dev/track/24/24tool"></script>
     <script>
-        // โค้ดนี้จะอัปเดตจำนวนผู้เข้าชมในแท็กที่มี id="visitor-count"
-        document.getElementById('visitor-count').textContent = 'จำนวนผู้เข้าชม: ' + counterData.count;
+        // กำหนดค่า workspace, counter, และ API Key ของคุณ
+        const workspace = '24tool';   // Workspace Slug
+        const counter = '24tool';     // Counter Slug
+        const apiKey = 'YOUR_API_KEY'; // ใส่ API Key ของคุณ
+
+        const apiUrl = `https://api.counterapi.dev/v2/${workspace}/${counter}/up`;
+
+        // เรียก API เพิ่มค่า counter
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${apiKey}`
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            // แสดงผลจำนวนผู้เข้าชม
+            document.getElementById('visitor-count').textContent = data.value;
+        })
+        .catch(err => {
+            console.error('เกิดข้อผิดพลาด:', err);
+            document.getElementById('visitor-count').textContent = 'ไม่สามารถโหลดได้';
+        });
     </script>
 </body>
 </html>
