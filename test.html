@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>นับผู้เข้าชมเว็บไซต์</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #visitor-count {
+            font-size: 2rem;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    <h1>จำนวนผู้เข้าชมเว็บไซต์</h1>
+    <p>ผู้เข้าชมทั้งหมด: <span id="visitor-count">Loading...</span></p>
+
+    <script src="https://counterapi.dev/track/24/24tool"></script>
+    <script>
+        // โค้ดนี้จะอัปเดตจำนวนผู้เข้าชมในแท็กที่มี id="visitor-count"
+        document.getElementById('visitor-count').textContent = 'จำนวนผู้เข้าชม: ' + counterData.count;
+    </script>
+</body>
+</html>
