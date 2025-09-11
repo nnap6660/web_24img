@@ -200,36 +200,46 @@
 <style> /* งานนี้ */
 .page-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* ยืดหยุ่นตามหน้าจอ */
+  grid-template-columns: repeat(4, 160px); /* 4 ต่อแถว */
   gap: 15px;
+  justify-content: center;
   margin-top: 20px;
-  justify-items: center;
 }
 
 .page-box {
   position: relative;
+  width: 160px;
+  height: 200px;
   border: 1px solid #ccc;
   border-radius: 12px;
-  width: 140px;   /* ขนาดคงที่ */
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: grab;
   overflow: hidden;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: grab;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .page-box img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* เติมเต็ม box */
+  display: block;
 }
 
 .page-box:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.page-number {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: rgba(248,133,129,0.9);
+  color: #fff;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-bottom-right-radius: 6px;
+  font-size: 14px;
+  z-index: 10;
 }
 </style>
 
@@ -245,7 +255,7 @@
     <!-- Logo -->
     <a href="index.html" class="flex items-center space-x-3">
       <img src="images/logo3.png" class="h-14 w-13" alt="Logo">
-      <span class="self-center text-2xl font-semibold text-white">เพิ่ม ลบ เรียงหน้า</span>
+      <span class="self-center text-2xl font-semibold text-white">แก้ไขหน้า PDF</span>
     </a>
 
     <!-- Hamburger (mobile) -->
@@ -308,11 +318,20 @@
   <span class="custom-file-upload" style="background:#f88581; padding:8px 15px; border-radius:6px; color:#000; cursor:pointer;">เลือกไฟล์</span>
 </label>
 
-<div class="page-grid" id="page-grid"></div>
+<div class="page-grid" id="page-grid"></div> <br><br>
 
-<button id="merge-btn" class="custom-file-upload">รวม PDF</button>
+<button id="merge-btn" class="custom-file-upload">รวม PDF</button><br><br><br><br>
 
 <a id="download-link"></a>
+
+<div id="donate-section" style="display: none; margin-top: 40px; text-align: center;">
+  <hr style="width:100%; border-color:#f88581; margin-bottom:20px;">
+  <h2>🙏 สนับสนุนจ่ายค่าเว็บไซต์</h2>
+  <p>หากคุณชอบเว็บนี้และต้องการสนับสนุนผู้พัฒนา สามารถโดเนทผ่าน QR Code ด้านล่างได้เลย</p>
+  <img src="images/promptpay_qr.png" alt="QR Code โดเนท" 
+       style="max-width: 250px; width: auto; display:block; margin: 0 auto; border: 1px solid #ccc; padding: 10px; background: #fff; border-radius: 10px;">
+  <p>ขอบคุณมากครับ ❤️</p>
+</div>
 
 <script>
 const uploadInput = document.getElementById('pdf-upload');
@@ -366,6 +385,90 @@ function updatePageNumbers() {
   });
 }
 
+function createPageBox(imgData, file) {
+  const box = document.createElement('div');
+  box.className = 'page-box';
+
+  const img = document.createElement('img');
+  img.src = imgData;
+  box.appendChild(img);
+
+  // เลขหน้า
+  const number = document.createElement('div');
+  number.className = 'page-number';
+  number.innerText = pagesArray.length + 1;
+  box.appendChild(number);
+
+  // ปุ่มควบคุม (ย้ายลงด้านล่าง)
+  const control = document.createElement('div');
+  control.className = 'page-controls';
+  control.style.position = 'absolute';
+  control.style.bottom = '5px';    // ย้ายไปด้านล่าง
+  control.style.left = '50%';      // จัดกึ่งกลาง
+  control.style.transform = 'translateX(-50%)';
+  control.style.display = 'flex';
+  control.style.flexDirection = 'row'; // แนวนอน
+  control.style.gap = '5px';
+
+  const btnLeft = document.createElement('button');
+  btnLeft.innerText = '⬅️';
+  btnLeft.title = 'Move Back';
+  btnLeft.style.padding = '6px 12px';  // ความสูง/กว้าง
+btnLeft.style.fontSize = '18px';      // ขนาดตัวอักษร
+btnLeft.style.borderRadius = '6px';   // ปรับมุมโค้ง
+  btnLeft.onclick = e => { e.stopPropagation(); movePage(box, -1); };
+
+  const btnRight = document.createElement('button');
+  btnRight.innerText = '➡️';
+  btnRight.title = 'Move Forward';
+  btnRight.style.padding = '6px 12px';  // ความสูง/กว้าง
+btnRight.style.fontSize = '18px';      // ขนาดตัวอักษร
+btnRight.style.borderRadius = '6px';   // ปรับมุมโค้ง
+  btnRight.onclick = e => { e.stopPropagation(); movePage(box, 1); };
+
+  const btnDelete = document.createElement('button');
+  btnDelete.innerText = '❌';
+  btnDelete.title = 'Delete';
+  btnDelete.style.padding = '6px 12px';  // ความสูง/กว้าง
+btnDelete.style.fontSize = '18px';      // ขนาดตัวอักษร
+btnDelete.style.borderRadius = '6px';   // ปรับมุมโค้ง
+  btnDelete.onclick = e => { e.stopPropagation(); deletePage(box); };
+
+  control.appendChild(btnLeft);
+  control.appendChild(btnRight);
+  control.appendChild(btnDelete);
+  box.appendChild(control);
+
+  pageGrid.appendChild(box);
+
+  const pageObj = { ...file, box, imgData }; // file = { pdfFile, pageIndex }
+
+  pagesArray.push(pageObj);
+  updatePageNumbers();
+}
+
+function movePage(box, direction) {
+  const index = pagesArray.findIndex(o => o.box === box);
+  if (index < 0) return;
+
+  const newIndex = index + direction;
+  if (newIndex < 0 || newIndex >= pagesArray.length) return;
+
+  pageGrid.insertBefore(box, direction === -1 ? pagesArray[newIndex].box : pagesArray[newIndex].box.nextSibling);
+
+  // swap ใน pagesArray
+  [pagesArray[index], pagesArray[newIndex]] = [pagesArray[newIndex], pagesArray[index]];
+
+  updatePageNumbers();
+}
+
+function deletePage(box) {
+  pageGrid.removeChild(box);
+  pagesArray = pagesArray.filter(o => o.box !== box);
+  updatePageNumbers();
+}
+
+
 // อัพโหลด PDF
 uploadInput.addEventListener('change', async (e) => {
   const files = Array.from(e.target.files);
@@ -377,36 +480,19 @@ uploadInput.addEventListener('change', async (e) => {
     const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
 
     for (let p = 0; p < pdf.numPages; p++) {
-      const page = await pdf.getPage(p+1);
-      const viewport = page.getViewport({scale:1});
+      const page = await pdf.getPage(p + 1);
+      const viewport = page.getViewport({ scale: 1 });
       const canvas = document.createElement('canvas');
       canvas.width = viewport.width;
       canvas.height = viewport.height;
       const ctx = canvas.getContext('2d');
-      await page.render({canvasContext: ctx, viewport: viewport}).promise;
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
 
       const imgData = canvas.toDataURL('image/png');
-      const box = document.createElement('div');
-      box.className = 'page-box';
-      const img = document.createElement('img');
-      img.src = imgData;
-      const number = document.createElement('div');
-      number.className = 'page-number';
-      number.innerText = pagesArray.length + 1;
 
-      box.appendChild(img);
-      box.appendChild(number);
-      pageGrid.appendChild(box);
+      // เรียก createPageBox แทนการสร้าง box เอง
+      createPageBox(imgData, { pdfFile: file, pageIndex: p });
 
-      const pageObj = { pdfFile: file, pageIndex: p, box };
-      pagesArray.push(pageObj);
-
-      // ดับเบิลคลิกลบ
-      box.ondblclick = () => {
-        pageGrid.removeChild(box);
-        pagesArray = pagesArray.filter(obj => obj.box !== box);
-        updatePageNumbers();
-      };
     }
   }
 
@@ -433,10 +519,14 @@ mergeBtn.addEventListener('click', async () => {
   downloadLink.download = 'merged.pdf';
   downloadLink.innerText = '📥 ดาวน์โหลด PDF รวม';
   downloadLink.style.display = 'block';
+  document.getElementById('donate-section').style.display = 'block';
+
+
+  // เลื่อนหน้าไปยังลิงก์ดาวน์โหลด
+  downloadLink.scrollIntoView({behavior: 'smooth', block: 'center'});
 
 
 });
 </script>
 </body>
 </html>
-
